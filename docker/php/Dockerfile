@@ -20,6 +20,8 @@ RUN apk add --no-cache \
         ttf-droid \
         ttf-freefont \
         ttf-liberation \
+        nodejs \
+        npm \
 	;
 RUN set -eux; \
     install-php-extensions \
@@ -57,6 +59,8 @@ WORKDIR /var/www/laravel
 USER rahul
 
 
+
+
 FROM base AS prod
 
 ENV APP_ENV=production
@@ -64,4 +68,6 @@ RUN composer install --no-dev --no-interaction --no-scripts --optimize-autoloade
 
 FROM base AS dev
 ENV APP_ENV=local
-RUN composer install --no-interaction --no-scripts
+RUN composer install --no-interaction --no-scripts && \
+    npm install && \
+    npm run dev
